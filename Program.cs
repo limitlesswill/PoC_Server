@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace SimpleWebServer
 {
@@ -38,7 +39,7 @@ namespace SimpleWebServer
         public void process()
         {
             Socket client = listener.AcceptSocket();
-            Console.WriteLine("Listening for connection.");
+            Console.WriteLine("Listening for a connection.");
 
             byte[] data = new byte[1000];
             int size = client.Receive(data);
@@ -48,6 +49,10 @@ namespace SimpleWebServer
                 Console.Write(Convert.ToChar(data[i]));
 
             Console.WriteLine("\n\n========================================================\n");
+
+            string httpResponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<h1>no repsonse but an HTML xD</h1>";
+
+            client.Send(Encoding.ASCII.GetBytes(httpResponse));
             client.Close();
         }
         internal class Program
